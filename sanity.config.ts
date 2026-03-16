@@ -7,8 +7,8 @@ export default defineConfig({
   title: 'AccountingBody',
   basePath: '/studio',
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
+  projectId: '4rl1ejq1',
+  dataset: 'production',
 
   plugins: [
     structureTool(),
