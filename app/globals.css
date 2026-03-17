@@ -16,7 +16,7 @@
 
 :root {
   /* ── Brand Colours ────────────────────────────────────────── */
-  --color-navy-950:   #0C1A3D;
+  --color-navy-950:   #003A9B;
   --color-navy-900:   #1a2346;
   --color-navy-800:   #2b3768;
   --color-navy-700:   #30407e;
@@ -533,7 +533,7 @@
     background: var(--color-navy-950);
     background-image:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
-      linear-gradient(135deg, #0C1A3D 0%, #1a2e5a 60%, #0a1e50 100%);
+      linear-gradient(135deg, #003A9B 0%, #1a2e5a 60%, #0a1e50 100%);
     color: white;
   }
 }
