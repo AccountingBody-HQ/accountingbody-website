@@ -1,27 +1,581 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   AccountingBody.com — Global Styles
+   Design system: Editorial Financial Authority
+   Fonts: DM Serif Display (headings) + DM Sans (body) + JetBrains Mono (code)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   CSS CUSTOM PROPERTIES
+   ───────────────────────────────────────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Brand Colours ────────────────────────────────────────── */
+  --color-navy-950:   #0C1A3D;
+  --color-navy-900:   #1a2346;
+  --color-navy-800:   #2b3768;
+  --color-navy-700:   #30407e;
+  --color-navy-600:   #3a4f9a;
+  --color-navy-500:   #4c67b6;
+  --color-navy-400:   #6b87c7;
+  --color-navy-300:   #9aafda;
+  --color-navy-200:   #c3cfe8;
+  --color-navy-100:   #dde4f2;
+  --color-navy-50:    #f0f3fa;
+
+  --color-gold-500:   #D4A017;
+  --color-gold-400:   #e8b030;
+  --color-gold-600:   #b87d10;
+  --color-gold-100:   #faf1cc;
+  --color-gold-50:    #fdf9ec;
+
+  --color-slate-950:  #24211c;
+  --color-slate-900:  #433f38;
+  --color-slate-800:  #504d46;
+  --color-slate-700:  #615d53;
+  --color-slate-600:  #787367;
+  --color-slate-500:  #928e80;
+  --color-slate-400:  #b0ac9f;
+  --color-slate-300:  #ccc9bf;
+  --color-slate-200:  #e4e2db;
+  --color-slate-100:  #f1f0ec;
+  --color-slate-50:   #F8F7F4;
+
+  --color-teal-600:   #0d9185;
+  --color-teal-500:   #14b4a3;
+  --color-teal-400:   #2dd0bc;
+  --color-teal-100:   #ccfbf4;
+  --color-teal-50:    #f0fdfb;
+
+  --color-crimson-600:#e11d48;
+  --color-crimson-500:#f43f5e;
+  --color-crimson-100:#ffe4e6;
+  --color-crimson-50: #fff1f2;
+
+  /* ── Semantic Tokens ──────────────────────────────────────── */
+  --brand:            var(--color-navy-950);
+  --accent:           var(--color-gold-500);
+  --surface:          var(--color-slate-50);
+  --surface-elevated: #ffffff;
+  --surface-subtle:   var(--color-slate-100);
+
+  --text-primary:     var(--color-slate-950);
+  --text-secondary:   var(--color-slate-700);
+  --text-muted:       var(--color-slate-500);
+  --text-inverse:     #ffffff;
+
+  --border:           var(--color-slate-200);
+  --border-strong:    var(--color-slate-300);
+  --border-brand:     var(--color-navy-200);
+
+  /* ── Typography ───────────────────────────────────────────── */
+  --font-display:     'DM Serif Display', Georgia, serif;
+  --font-sans:        'DM Sans', system-ui, sans-serif;
+  --font-mono:        'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ── Spacing scale ────────────────────────────────────────── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* ── Shadows ──────────────────────────────────────────────── */
+  --shadow-sm:  0 1px 3px 0 rgb(12 26 61 / 0.08), 0 1px 2px -1px rgb(12 26 61 / 0.06);
+  --shadow-md:  0 6px 14px -2px rgb(12 26 61 / 0.1), 0 3px 6px -3px rgb(12 26 61 / 0.07);
+  --shadow-lg:  0 12px 28px -4px rgb(12 26 61 / 0.12), 0 6px 12px -4px rgb(12 26 61 / 0.06);
+  --shadow-xl:  0 20px 40px -8px rgb(12 26 61 / 0.15), 0 8px 20px -6px rgb(12 26 61 / 0.08);
+  --shadow-gold:0 4px 14px 0 rgb(212 160 23 / 0.35);
+
+  /* ── Border Radius ────────────────────────────────────────── */
+  --radius-sm:  0.25rem;
+  --radius-md:  0.5rem;
+  --radius-lg:  0.75rem;
+  --radius-xl:  1rem;
+  --radius-2xl: 1.25rem;
+  --radius-full:9999px;
+
+  /* ── Transitions ──────────────────────────────────────────── */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:   250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  --nav-height:        64px;
+  --ticker-height:     40px;
+  --container-max:     1280px;
+  --content-max:       72rem;
+
+  /* ── Exam Body Brand Colours ──────────────────────────────── */
+  --acca-color:        #004B8D;   /* ACCA official blue */
+  --cima-color:        #0081C6;   /* CIMA blue */
+  --aat-color:         #00A19A;   /* AAT teal */
+  --icaew-color:       #003087;   /* ICAEW navy */
+  --cpa-color:         #BE1E2D;   /* AICPA red */
+  --aca-color:         #003087;   /* ACA / ICAEW */
+  --cfab-color:        #4A2885;   /* CFAB purple */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE RESET & DEFAULTS
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    background-color: var(--surface);
+    min-height: 100vh;
+  }
+
+  /* ── Headings: DM Serif Display ──────────────────────────── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 400;  /* DM Serif Display uses regular weight */
+    color: var(--color-navy-950);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  h1 { font-size: clamp(2rem, 5vw, 3.75rem); line-height: 1.1; }
+  h2 { font-size: clamp(1.625rem, 3.5vw, 2.5rem); line-height: 1.15; }
+  h3 { font-size: clamp(1.25rem, 2.5vw, 1.875rem); }
+  h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1.125rem; }
+
+  /* ── Body Copy ────────────────────────────────────────────── */
+  p {
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: 70ch;
+  }
+
+  /* ── Links ────────────────────────────────────────────────── */
+  a {
+    color: var(--color-navy-700);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  a:hover {
+    color: var(--color-gold-500);
+  }
+
+  /* ── Prose Links ──────────────────────────────────────────── */
+  article a,
+  .prose a {
+    color: var(--color-navy-700);
+    text-decoration: underline;
+    text-decoration-color: var(--color-navy-200);
+    text-underline-offset: 3px;
+    transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+  }
+
+  article a:hover,
+  .prose a:hover {
+    color: var(--color-gold-500);
+    text-decoration-color: var(--color-gold-500);
+  }
+
+  /* ── Selection ────────────────────────────────────────────── */
+  ::selection {
+    background-color: var(--color-navy-100);
+    color: var(--color-navy-950);
+  }
+
+  /* ── Focus Visible ────────────────────────────────────────── */
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Scrollbar ────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-slate-100); }
+  ::-webkit-scrollbar-thumb { background: var(--color-slate-300); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-slate-400); }
+
+  /* ── Tables ───────────────────────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--color-navy-950);
+    color: var(--text-inverse);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+  td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+  tr:hover td { background-color: var(--color-slate-50); }
+
+  /* ── Code ─────────────────────────────────────────────────── */
+  code, kbd, samp {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-navy-50);
+    color: var(--color-navy-800);
+    padding: 0.125em 0.375em;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-navy-100);
+  }
+
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    background: var(--color-navy-950);
+    color: #e2e8f0;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    line-height: 1.7;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  /* ── Images ───────────────────────────────────────────────── */
+  img { max-width: 100%; height: auto; display: block; }
+  img[src=""], img:not([src]) { visibility: hidden; }
+
+  /* ── HR ───────────────────────────────────────────────────── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--space-8) 0;
+  }
+
+  /* ── Blockquote ────────────────────────────────────────────── */
+  blockquote {
+    border-left: 3px solid var(--color-gold-500);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: var(--color-gold-50);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    color: var(--color-navy-800);
+    font-style: italic;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─────────────────────────────────────────────────────────────────────────────
+   COMPONENT LAYER
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+
+  /* ── Layout containers ──────────────────────────────────────── */
+  .container-site {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .container-narrow {
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .container-wide {
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  /* ── Section spacing ──────────────────────────────────────────── */
+  .section {
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  .section-sm {
+    padding-block: clamp(2rem, 4vw, 4rem);
+  }
+
+  /* ── Gold accent line (brand divider) ─────────────────────────── */
+  .accent-line {
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: var(--color-gold-500);
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+  }
+
+  .accent-line-center {
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: var(--color-gold-500);
+    border-radius: 9999px;
+    margin: 0 auto 1rem;
+  }
+
+  /* ── Eyebrow label ────────────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-gold-500);
+  }
+
+  /* ── Section title ────────────────────────────────────────────── */
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 4vw, 2.5rem);
+    color: var(--color-navy-950);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Prose styles ─────────────────────────────────────────────── */
+  .prose-ab {
+    max-width: 72ch;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .prose-ab h1, .prose-ab h2,
+  .prose-ab h3, .prose-ab h4 {
+    color: var(--color-navy-950);
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+  }
+
+  .prose-ab p { margin-bottom: 1.5em; max-width: 100%; }
+
+  .prose-ab ul, .prose-ab ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5em;
+  }
+
+  .prose-ab li { margin-bottom: 0.5em; }
+
+  .prose-ab strong {
+    font-weight: 600;
+    color: var(--color-navy-800);
+  }
+
+  /* ── Card base ────────────────────────────────────────────────── */
+  .card-base {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+  }
+
+  .card-base:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--color-slate-300);
+  }
+
+  /* ── Surface variants ─────────────────────────────────────────── */
+  .surface-navy {
+    background: var(--color-navy-950);
+    color: var(--text-inverse);
+  }
+
+  .surface-gold {
+    background: linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-400) 100%);
+    color: var(--color-navy-950);
+  }
+
+  .surface-subtle {
+    background: var(--color-slate-50);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Gradient text ────────────────────────────────────────────── */
+  .text-gradient-navy {
+    background: linear-gradient(135deg, var(--color-navy-950), var(--color-navy-700));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--color-gold-600), var(--color-gold-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ── Skeleton loading ─────────────────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-slate-100) 25%,
+      var(--color-slate-50)  50%,
+      var(--color-slate-100) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Sticky header offset ─────────────────────────────────────── */
+  .page-top-offset {
+    padding-top: calc(var(--nav-height) + var(--ticker-height));
+  }
+
+  /* ── Reading progress line ────────────────────────────────────── */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--color-gold-500);
+    z-index: 100;
+    transition: width 100ms linear;
+  }
+
+  /* ── Pill tag ─────────────────────────────────────────────────── */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* ── Number stat ──────────────────────────────────────────────── */
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: var(--color-navy-950);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  /* ── Hover lift effect ────────────────────────────────────────── */
+  .hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* ── Gold underline heading decoration ────────────────────────── */
+  .heading-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .heading-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -0.25rem;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-gold-500);
+    border-radius: 9999px;
+  }
+
+  /* ── Full-bleed navy section with noise overlay ────────────────── */
+  .section-navy {
+    background: var(--color-navy-950);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+      linear-gradient(135deg, #0C1A3D 0%, #1a2e5a 60%, #0a1e50 100%);
+    color: white;
+  }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   UTILITY LAYER
+   ───────────────────────────────────────────────────────────────────────────── */
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+
+  /* ── Animation delays ─────────────────────────────────────────── */
+  .delay-75  { animation-delay: 75ms; }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  /* ── Text styles ──────────────────────────────────────────────── */
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  .font-display { font-family: var(--font-display); }
+  .font-body    { font-family: var(--font-sans); }
+  .font-mono    { font-family: var(--font-mono); }
+
+  /* ── Noise overlay ────────────────────────────────────────────── */
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
   }
+
+  /* ── Aspect ratios ────────────────────────────────────────────── */
+  .aspect-article { aspect-ratio: 16 / 9; }
+  .aspect-square  { aspect-ratio: 1 / 1; }
+  .aspect-portrait{ aspect-ratio: 3 / 4; }
+
+  /* ── Safe area inset for mobile ────────────────────────────────── */
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-top    { padding-top:    env(safe-area-inset-top); }
 }
