@@ -376,14 +376,14 @@ function EmailSignupSection() {
           <form
             action="/api/subscribe"
             method="POST"
-            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            className="flex flex-col gap-3 max-w-md mx-auto w-full px-4 sm:px-0 sm:flex-row"
           >
             <input
               type="email"
               name="email"
               placeholder="your@email.com"
               required
-              className="flex-1 h-12 px-4 rounded-lg text-sm bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+              className="flex-1 min-w-0 w-full h-12 px-4 rounded-lg text-sm bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent"
             />
             <button
               type="submit"
