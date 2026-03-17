@@ -123,7 +123,7 @@ const navSections: NavSection[] = [
     ],
     cta: {
       label:       'Start Practising Free →',
-      href:        '/practice',
+      href:        '/practice-questions',
       description: 'No account required',
     },
   },
