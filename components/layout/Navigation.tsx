@@ -521,14 +521,14 @@ export function Navigation() {
   aria-label="AccountingBody home"
 >
   {/* Grid icon — matches brand logomark */}
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="12" height="12" rx="2" fill="#003A9B"/>
-    <rect x="16" y="0" width="12" height="12" rx="2" fill="#003A9B"/>
-    <rect x="0" y="16" width="12" height="12" rx="2" fill="#003A9B"/>
-    <rect x="16" y="16" width="12" height="12" rx="2" fill="#003A9B"/>
-  </svg>
-  <span className="font-sans font-semibold hidden sm:block" style={{ color: '#003A9B', fontSize: '15px', lineHeight: '28px' }}>
-  Accounting Body<sup style={{ fontSize: '20px', verticalAlign: 'super' }}>®</sup>
+  <svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="11" height="11" rx="2" fill="#003A9B"/>
+  <rect x="15" y="0" width="11" height="11" rx="2" fill="#003A9B"/>
+  <rect x="0" y="15" width="11" height="11" rx="2" fill="#003A9B"/>
+  <rect x="15" y="15" width="11" height="11" rx="2" fill="#003A9B"/>
+</svg>
+  <span className="font-sans font-semibold hidden sm:block" style={{ color: '#003A9B', fontSize: '18px', lineHeight: '26px' }}>
+  Accounting Body<sup style={{ fontSize: '10px', verticalAlign: 'super' }}>®</sup>
 </span>
 </Link>
 
