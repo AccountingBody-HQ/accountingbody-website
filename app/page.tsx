@@ -372,7 +372,7 @@ function EmailSignupSection() {
           <form
             action="/api/subscribe"
             method="POST"
-            className="flex flex-col gap-3 max-w-md mx-auto w-full px-4 sm:px-0 sm:flex-row"
+            className="flex flex-col gap-3 w-full max-w-sm mx-auto px-6"
           >
             <input
               type="email"
