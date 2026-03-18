@@ -1,4 +1,5 @@
 import { PortableText, type PortableTextComponents, type PortableTextBlock } from '@portabletext/react'
+import QuizBankEmbed from './QuizBankEmbed'
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
 const DATASET    = process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production'
@@ -53,8 +54,6 @@ const components: PortableTextComponents = {
           No quiz selected — edit this block in Sanity Studio.
         </div>
       )
-      // QuizBankEmbed is a server component — imported dynamically to avoid client bundle issues
-      const QuizBankEmbed = require('./QuizBankEmbed').default
       return <QuizBankEmbed quizId={id} />
     },
 
