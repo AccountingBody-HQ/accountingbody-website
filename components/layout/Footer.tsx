@@ -45,7 +45,7 @@ const footerColumns: FooterColumn[] = [
       { label: 'Mock Exams',                href: '/practice/mock-exams' },
       { label: 'Past Papers',               href: '/practice/past-papers' },
       { label: 'Case Studies',              href: '/practice/scenarios' },
-      { label: 'All Practice',             href: '/practice' },
+      { label: 'All Practice',              href: '/practice' },
     ],
   },
   {
@@ -68,7 +68,6 @@ const footerColumns: FooterColumn[] = [
       { label: 'Post a Job',                href: '/hire/post-job' },
       { label: 'Freelancer Directory',      href: '/freelancers' },
       { label: 'CPD Resources',             href: '/firms/cpd' },
-      { label: 'Global Payroll Expert',     href: 'https://globalpayrollexpert.com', external: true },
     ],
   },
   {
@@ -141,27 +140,26 @@ const legalLinks = [
 ]
 
 const stats = [
-  { value: '3,000+', label: 'Articles' },
-  { value: '50,000+', label: 'Practice Questions' },
+  { value: '3,000+',   label: 'Articles' },
+  { value: '50,000+',  label: 'Practice Questions' },
   { value: '250,000+', label: 'Students Helped' },
-  { value: '20+', label: 'Qualifications Covered' },
+  { value: '20+',      label: 'Qualifications Covered' },
 ]
 
 // ── Email Signup Widget ───────────────────────────────────────────────────────
 function EmailSignup() {
-  const [email, setEmail] = useState('')
+  const [email,  setEmail]  = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !email.includes('@')) return
     setStatus('loading')
-    // Wire up to Resend/API route
     try {
       await fetch('/api/subscribe', {
-        method: 'POST',
+        method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body:    JSON.stringify({ email }),
       })
       setStatus('success')
       setEmail('')
@@ -176,7 +174,7 @@ function EmailSignup() {
         Stay Updated
       </p>
       <h3 className="font-display text-white text-lg mb-1.5">
-        Free exam tips & study notes
+        Free exam tips &amp; study notes
       </h3>
       <p className="text-sm text-white/60 mb-4 leading-relaxed">
         Weekly study tips, exam technique guides, and new question releases.
@@ -217,9 +215,9 @@ function EmailSignup() {
             </button>
           </div>
           {status === 'error' && (
-            <p className="text-xs text-crimson-400">Something went wrong. Please try again.</p>
+            <p className="text-xs text-red-400">Something went wrong. Please try again.</p>
           )}
-          <p className="text-2xs text-white/35">
+          <p className="text-xs text-white/35">
             By subscribing you agree to our{' '}
             <Link href="/privacy" className="underline hover:text-white/60">Privacy Policy</Link>.
           </p>
@@ -287,7 +285,7 @@ export function Footer() {
 
             {/* Social links */}
             <div>
-              <p className="text-2xs font-semibold text-slate-500 uppercase tracking-widest mb-3">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">
                 Follow Us
               </p>
               <div className="flex items-center gap-1.5">
@@ -311,7 +309,7 @@ export function Footer() {
           <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
             {footerColumns.map(column => (
               <div key={column.title}>
-                <h4 className="text-2xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
                   {column.title}
                 </h4>
                 <ul className="space-y-2.5">
@@ -326,12 +324,12 @@ export function Footer() {
                         {link.label}
                         {link.external && <ExtIcon />}
                         {link.badge && (
-                          <span className="text-2xs font-semibold px-1.5 py-0.5 rounded-full bg-teal-500/20 text-teal-400 border border-teal-500/30">
+                          <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-teal-500/20 text-teal-400 border border-teal-500/30">
                             {link.badge}
                           </span>
                         )}
                         {link.new && (
-                          <span className="text-2xs font-semibold px-1.5 py-0.5 rounded-full bg-gold-500/20 text-gold-400 border border-gold-500/30">
+                          <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full bg-gold-500/20 text-gold-400 border border-gold-500/30">
                             New
                           </span>
                         )}
@@ -342,52 +340,26 @@ export function Footer() {
               </div>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* ── Sister sites bar ──────────────────────────────────────────────── */}
-      <div className="border-t border-white/10">
-        <div className="container-wide py-4">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <span className="text-2xs font-semibold text-slate-500 uppercase tracking-widest">
-              Part of the AccountingBody Network
-            </span>
-            <a
-              href="https://globalpayrollexpert.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-white/50 hover:text-gold-400 transition-colors"
-            >
-              <div className="w-4 h-4 rounded bg-gold-500/20 flex items-center justify-center">
-                <svg className="w-2.5 h-2.5 text-gold-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10 1a9 9 0 100 18A9 9 0 0010 1zm0 2c.55 0 1.39.73 2.07 2.5H7.93C8.61 3.73 9.45 3 10 3zm-3.6 2.5h7.2c.2.64.34 1.35.4 2.1H5.99c.07-.75.21-1.46.4-2.1zm-3.05.19A6.97 6.97 0 012.09 7.6H4.3c-.08-.64-.2-1.26-.35-1.91zM2 9.5h2.4A14.6 14.6 0 002.1 11H2V9.5zM10 17c-.55 0-1.39-.73-2.07-2.5h4.14C11.39 16.27 10.55 17 10 17z"/>
-                </svg>
-              </div>
-              GlobalPayrollExpert.com
-              <ExtIcon />
-            </a>
-            <a
-              href="https://ethiotax.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white/80 transition-colors"
-            >
-              EthioTax.com
-              <ExtIcon />
-            </a>
-          </div>
         </div>
       </div>
 
       {/* ── Legal bar ─────────────────────────────────────────────────────── */}
-      <div className="border-t border-white/8">
+      <div className="border-t border-white/10">
         <div className="container-wide py-5">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <p className="text-xs text-white/35">
-              © {new Date().getFullYear()} AccountingBody Ltd. All rights reserved.{' '}
-              Registered in England & Wales.
-            </p>
-            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1.5" aria-label="Legal navigation">
+            <div className="space-y-1">
+              <p className="text-xs text-white/35">
+                © {new Date().getFullYear()} AccountingBody Ltd. All rights reserved.{' '}
+                Registered in England &amp; Wales.
+              </p>
+              <p className="text-xs text-white/25">
+                AccountingBody is an independent educational resource. Not affiliated with,
+                endorsed by, or authorised by ACCA, CIMA, AAT, ICAEW, or any other
+                professional body. All qualification names are trademarks of their respective owners.
+              </p>
+            </div>
+            <nav className="flex flex-wrap items-center gap-x-4 gap-y-1.5 shrink-0" aria-label="Legal navigation">
               {legalLinks.map(link => (
                 <Link
                   key={link.href}
@@ -401,6 +373,7 @@ export function Footer() {
           </div>
         </div>
       </div>
+
     </footer>
   )
 }
