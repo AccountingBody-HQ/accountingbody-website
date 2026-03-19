@@ -157,16 +157,6 @@ const navSections: NavSection[] = [
     },
   },
     {
-    id:    'about',
-    label: 'About',
-    href:  '/about',
-  },
-  {
-    id:    'contact',
-    label: 'Contact',
-    href:  '/contact',
-  },
-  {
     id:    'firms',
     label: 'Firms & Freelancers',
     groups: [
@@ -190,6 +180,16 @@ const navSections: NavSection[] = [
       href:        '/firms-freelancers/join',
       description: 'Join our growing directory of professionals',
     },
+  },
+  {
+    id:    'about',
+    label: 'About',
+    href:  '/about',
+  },
+  {
+    id:    'contact',
+    label: 'Contact',
+    href:  '/contact',
   },
 ]
 
