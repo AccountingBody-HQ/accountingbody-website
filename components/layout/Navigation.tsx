@@ -37,29 +37,29 @@ const navSections: NavSection[] = [
     label: 'Get Help',
     groups: [
       {
-        title: 'Free Resources',
+        title: 'Professional Services',
         links: [
-          { label: 'Accounting Glossary',    href: '/glossary',     description: '1,200+ accounting terms defined' },
-          { label: 'Ask a Question',         href: '/ask',          description: 'Post your accounting question' },
-          { label: 'Study Forums',           href: '/forums',       description: 'Community discussion boards' },
-          { label: 'Exam Tips & Guides',     href: '/exam-tips',    description: 'Pass rate improving strategies' },
-          { label: 'Podcast',                href: '/podcast',      description: 'Accounting in Plain English' },
+          { label: 'Tax Advice',         href: '/get-help', description: 'Personal and business tax planning and compliance' },
+          { label: 'Bookkeeping',        href: '/get-help', description: 'Day-to-day financial records and reporting' },
+          { label: 'Payroll',            href: '/get-help', description: 'Payroll processing and RTI submissions' },
+          { label: 'Financial Planning', href: '/get-help', description: 'Forecasting and cash flow management' },
+          { label: 'Audit',              href: '/get-help', description: 'Statutory and voluntary audits' },
         ],
       },
       {
-        title: 'Quick Tools',
+        title: 'More Services',
         links: [
-          { label: 'Salary & Tax Calculator', href: '/tools/salary-calculator' },
-          { label: 'Depreciation Calculator', href: '/tools/depreciation' },
-          { label: 'Break-Even Calculator',   href: '/tools/break-even' },
-          { label: 'Ratio Calculator',        href: '/tools/ratios' },
+          { label: 'Business Advisory',  href: '/get-help', description: 'Strategic advice to grow your business' },
+          { label: 'Company Formation',  href: '/get-help', description: 'Register your limited company correctly' },
+          { label: 'VAT',                href: '/get-help', description: 'VAT registration, returns and MTD compliance' },
+          { label: 'Self Assessment',    href: '/get-help', description: 'Personal tax returns filed accurately' },
         ],
       },
     ],
     cta: {
-      label:       'Browse All Resources →',
-      href:        '/resources',
-      description: 'Everything you need in one place',
+      label:       'Find a Professional →',
+      href:        '/get-help',
+      description: 'Matched to a vetted expert within 24 hours',
     },
   },
 
@@ -133,23 +133,28 @@ const navSections: NavSection[] = [
     label: 'Hire Talent',
     groups: [
       {
-        title: 'Find Professionals',
+        title: 'Browse Jobs',
         links: [
-          { label: 'Find an Accountant',  href: '/hire/accountants',  description: 'Qualified accountants for hire' },
-          { label: 'Find a Bookkeeper',   href: '/hire/bookkeepers',  description: 'Expert bookkeeping services' },
-          { label: 'Find a Tax Adviser',  href: '/hire/tax-advisers', description: 'Personal and business tax' },
-          { label: 'Find an Auditor',     href: '/hire/auditors',     description: 'Statutory and internal audit' },
-          { label: 'Finance Recruitment', href: '/hire/recruitment',  description: 'Permanent and contract roles' },
+          { label: 'All Accounting Jobs',   href: '/hire-talent/jobs',                        description: 'Browse all open roles' },
+          { label: 'Accountant Roles',      href: '/hire-talent/jobs?role=Accountant',        description: 'Qualified accountant positions' },
+          { label: 'Bookkeeper Roles',      href: '/hire-talent/jobs?role=Bookkeeper',        description: 'Bookkeeping positions' },
+          { label: 'Tax Advisor Roles',     href: '/hire-talent/jobs?role=Tax+Advisor',       description: 'Tax specialist positions' },
+          { label: 'Payroll Manager Roles', href: '/hire-talent/jobs?role=Payroll+Manager',   description: 'Payroll specialist positions' },
         ],
       },
       {
         title: 'For Employers',
         links: [
-          { label: 'Post a Job',  href: '/hire/post-job' },
-          { label: 'Browse CVs',  href: '/hire/cvs' },
+          { label: 'Post a Job',       href: '/hire-talent/post-a-job', description: 'Advertise a role to our community' },
+          { label: 'Hire Talent Hub',  href: '/hire-talent',            description: 'Overview and role categories' },
         ],
       },
     ],
+    cta: {
+      label:       'Post a Job Today →',
+      href:        '/hire-talent/post-a-job',
+      description: 'Reach qualified accounting professionals',
+    },
   },
 
   {
@@ -157,28 +162,24 @@ const navSections: NavSection[] = [
     label: 'Firms & Freelancers',
     groups: [
       {
-        title: 'For Firms',
+        title: 'Directory',
         links: [
-          { label: 'List Your Firm',  href: '/firms/list',      description: 'Get found by new clients' },
-          { label: 'Firm Directory',  href: '/firms/directory', description: 'Browse accounting firms' },
-          { label: 'CPD Resources',   href: '/firms/cpd',       description: 'Continuing professional development' },
-          { label: 'Staff Training',  href: '/firms/training',  description: 'Team learning solutions' },
+          { label: 'Browse Directory',   href: '/firms-freelancers/directory', description: 'Find verified accounting professionals' },
+          { label: 'List Your Practice', href: '/firms-freelancers/join',      description: 'Get discovered by new clients' },
+          { label: 'How It Works',       href: '/firms-freelancers',           description: 'Overview of the directory' },
         ],
       },
       {
-        title: 'For Freelancers',
+        title: 'Need Help Instead?',
         links: [
-          { label: 'Create Your Profile',  href: '/freelancers/signup' },
-          { label: 'Find Work',            href: '/freelancers/jobs' },
-          { label: 'Freelance Resources',  href: '/freelancers/resources' },
-          { label: 'Rate Calculator',      href: '/freelancers/rate-calculator' },
+          { label: 'Get Matched to an Expert', href: '/get-help', description: 'We find the right professional for you' },
         ],
       },
     ],
     cta: {
       label:       'List Your Practice Free →',
-      href:        '/firms/list',
-      description: 'Join 3,000+ accounting professionals',
+      href:        '/firms-freelancers/join',
+      description: 'Join our growing directory of professionals',
     },
   },
 ]
