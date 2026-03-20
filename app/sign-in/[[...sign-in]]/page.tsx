@@ -38,18 +38,23 @@ export default function SignInPage() {
           <div className="flex justify-center">
             <SignIn
               appearance={{
+                variables: {
+                  colorPrimary: '#0a0f2e',
+                  colorTextOnPrimaryBackground: '#ffffff',
+                  borderRadius: '0.5rem',
+                  fontFamily: 'inherit',
+                },
                 elements: {
                   rootBox: 'w-full',
-                  card: 'shadow-none border border-slate-200 rounded-xl bg-white p-8 w-full',
+                  card: 'shadow-none border border-slate-200 rounded-xl bg-white w-full',
                   headerTitle: 'hidden',
                   headerSubtitle: 'hidden',
-                  socialButtonsBlockButton: 'border border-slate-200 rounded-lg h-11 text-sm font-medium text-navy-950 hover:bg-slate-50 transition-colors',
-                  dividerLine: 'bg-slate-200',
-                  dividerText: 'text-slate-400 text-xs',
+                  socialButtonsBlockButton: 'border border-slate-200 rounded-lg text-sm font-medium text-navy-950 hover:bg-slate-50 transition-colors',
                   formFieldLabel: 'text-sm font-medium text-navy-950',
-                  formFieldInput: 'h-11 rounded-lg border-slate-200 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent',
-                  formButtonPrimary: 'h-11 rounded-lg bg-navy-950 text-white text-sm font-semibold hover:bg-navy-900 transition-colors shadow-sm',
+                  formFieldInput: 'rounded-lg border-slate-200 text-sm',
+                  formButtonPrimary: 'rounded-lg bg-navy-950 text-white text-sm font-semibold hover:bg-navy-900 transition-colors',
                   footerActionLink: 'text-navy-700 font-semibold hover:text-gold-500',
+                  footer: 'hidden',
                 },
               }}
             />
