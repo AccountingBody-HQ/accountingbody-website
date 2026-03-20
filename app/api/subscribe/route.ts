@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@supabase/supabase-js'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SECRET_KEY!
 )
 
 export async function POST(req: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
   try {
     const { email } = await req.json()
 
@@ -17,14 +17,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 })
     }
 
-    // 1. Save to Supabase
     const { error: dbError } = await supabase
       .from('email_subscribers')
       .upsert({ email, subscribed_at: new Date().toISOString() }, { onConflict: 'email' })
 
     if (dbError) console.error('Supabase error:', dbError)
 
-    // 2. Send confirmation email
     await resend.emails.send({
       from: 'AccountingBody <hello@accountingbody.com>',
       to: email,

@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@supabase/supabase-js'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SECRET_KEY!
 )
 
 export async function POST(req: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
   try {
     const { name, email, subject, message } = await req.json()
 
@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name, email and message are required.' }, { status: 400 })
     }
 
-    // 1. Save to Supabase
     await supabase.from('contact_submissions').insert({
       name,
       email,
@@ -26,7 +25,6 @@ export async function POST(req: NextRequest) {
       submitted_at: new Date().toISOString(),
     })
 
-    // 2. Notify admin
     await resend.emails.send({
       from: 'AccountingBody Contact <hello@accountingbody.com>',
       to: 'hello@accountingbody.com',
@@ -47,7 +45,6 @@ export async function POST(req: NextRequest) {
       `,
     })
 
-    // 3. Confirm to user
     await resend.emails.send({
       from: 'AccountingBody <hello@accountingbody.com>',
       to: email,
@@ -63,7 +60,7 @@ export async function POST(req: NextRequest) {
             </div>
             <div style="padding:32px 40px;">
               <p style="color:#475569;font-size:15px;line-height:1.7;margin:0 0 20px;">
-                Hi ${name}, thank you for getting in touch. We have received your message and will respond within 1–2 working days.
+                Hi ${name}, thank you for getting in touch. We will respond within 1–2 working days.
               </p>
               <a href="https://accountingbody.com"
                 style="display:inline-block;background:#D4A017;color:#0a0f2e;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;">
