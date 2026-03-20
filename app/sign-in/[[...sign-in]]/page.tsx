@@ -40,21 +40,14 @@ export default function SignInPage() {
               appearance={{
                 variables: {
                   colorPrimary: '#0a0f2e',
-                  colorTextOnPrimaryBackground: '#ffffff',
+                  colorBackground: '#ffffff',
+                  colorText: '#0f172a',
+                  colorTextSecondary: '#64748b',
+                  colorInputBackground: '#ffffff',
+                  colorInputText: '#0f172a',
                   borderRadius: '0.5rem',
                   fontFamily: 'inherit',
-                },
-                elements: {
-                  rootBox: 'w-full',
-                  card: 'shadow-none border border-slate-200 rounded-xl bg-white w-full',
-                  headerTitle: 'hidden',
-                  headerSubtitle: 'hidden',
-                  socialButtonsBlockButton: 'border border-slate-200 rounded-lg text-sm font-medium text-navy-950 hover:bg-slate-50 transition-colors',
-                  formFieldLabel: 'text-sm font-medium text-navy-950',
-                  formFieldInput: 'rounded-lg border-slate-200 text-sm',
-                  formButtonPrimary: 'rounded-lg bg-navy-950 text-white text-sm font-semibold hover:bg-navy-900 transition-colors',
-                  footerActionLink: 'text-navy-700 font-semibold hover:text-gold-500',
-                  footer: 'hidden',
+                  fontSize: '14px',
                 },
               }}
             />
