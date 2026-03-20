@@ -158,3 +158,22 @@ export function resolveCanonicalUrl(article: ArticleFull): string | null {
   if (!domain) return null
   return `${domain}/study/${article.examBody?.toLowerCase() ?? ''}/${article.slug.current}`
 }
+// ── Manual cards (replaces [ab_combined_cards] shortcode) ─────────────────────
+
+export interface ManualCardDoc {
+  _id:          string
+  title:        string
+  href:         string
+  description?: string
+  iconName?:    string
+  pinned?:      boolean
+  badge?:       string
+  accentClass?: string
+}
+
+export async function getManualCards(placement?: string): Promise<ManualCardDoc[]> {
+  const query = placement
+    ? `*[_type == "manualCard" && placement == $placement] | order(pinned desc, _createdAt asc) { _id, title, href, description, iconName, pinned, badge, accentClass }`
+    : `*[_type == "manualCard"] | order(pinned desc, _createdAt asc) { _id, title, href, description, iconName, pinned, badge, accentClass }`
+  return (await sanityFetch<ManualCardDoc[]>(query, placement ? { placement } : {})) ?? []
+}
