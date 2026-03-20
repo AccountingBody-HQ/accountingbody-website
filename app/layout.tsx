@@ -1,151 +1,181 @@
 // app/layout.tsx
-// AccountingBody — Root Layout
-// Metadata · GTM (loaded after consent only — UK GDPR) · AdSense · Canonical
+// AccountingBody.com — Root Layout
+// Includes: GTM, AdSense meta, Open Graph, Navigation, Footer, NewsTicker, CookieConsent
 
 import type { Metadata } from 'next'
+import Script from 'next/script'
+import { Navigation } from '@/components/layout/Navigation'
+import { Footer } from '@/components/layout/Footer'
+import { NewsTicker } from '@/components/layout/NewsTicker'
 import CookieConsent from '@/components/CookieConsent'
 import './globals.css'
 
-// ─────────────────────────────────────────────────────────────────────────────
-const SITE_URL  = 'https://accountingbody.com'
-const SITE_NAME = 'AccountingBody'
-// ─────────────────────────────────────────────────────────────────────────────
+// ── Environment ────────────────────────────────────────────────────────────────
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://accountingbody.com'
 
+// ── Default Metadata ──────────────────────────────────────────────────────────
 export const metadata: Metadata = {
-  // Tells Next.js the base URL so relative paths in metadata resolve correctly
   metadataBase: new URL(SITE_URL),
 
-  // ── Title ──────────────────────────────────────────────────────────────────
-  // template: every page that exports its own `title` will get " | AccountingBody" appended
   title: {
-    default:  `${SITE_NAME} — Study Notes, Practice Questions & Professional Resources`,
-    template: `%s | ${SITE_NAME}`,
+    default: 'AccountingBody — Everything You Need for Accounting & Finance',
+    template: '%s | AccountingBody',
   },
 
-  // ── Description ────────────────────────────────────────────────────────────
   description:
-    "The UK's leading accounting education platform. Study notes, practice questions, and " +
-    'professional resources for ACCA, CIMA, AAT, ICAEW, and more. Trusted by 250,000+ students.',
+    'The definitive accounting and finance education platform. Study notes, practice questions, and professional connections for ACCA, CIMA, AAT, ICAEW, and more.',
 
-  // ── Keywords ───────────────────────────────────────────────────────────────
   keywords: [
-    'ACCA study notes', 'CIMA study notes', 'AAT study notes', 'ICAEW resources',
-    'accounting practice questions', 'accounting qualifications', 'accounting education',
-    'ACCA F3', 'CIMA OCS', 'AAT Level 3', 'deferred tax', 'financial accounting',
-    'management accounting', 'UK accounting', 'accounting glossary',
+    'accounting education',
+    'ACCA study',
+    'CIMA study',
+    'AAT study notes',
+    'ICAEW ACA',
+    'accounting practice questions',
+    'finance qualifications',
+    'bookkeeping courses',
+    'accounting glossary',
+    'hire accountant',
   ],
 
-  // ── Authorship ─────────────────────────────────────────────────────────────
-  authors:   [{ name: 'AccountingBody', url: SITE_URL }],
-  creator:   SITE_NAME,
-  publisher: SITE_NAME,
+  authors: [{ name: 'AccountingBody', url: SITE_URL }],
+  creator: 'AccountingBody',
+  publisher: 'AccountingBody Ltd',
 
-  // ── Prevents mobile browsers auto-linking phone numbers, emails, etc ────────
-  formatDetection: { email: false, address: false, telephone: false },
-
-  // ── Open Graph (Facebook, LinkedIn, WhatsApp previews) ─────────────────────
   openGraph: {
-    type:        'website',
-    locale:      'en_GB',
-    url:         SITE_URL,
-    siteName:    SITE_NAME,
-    title:       `${SITE_NAME} — Study Notes, Practice Questions & Professional Resources`,
-    description: "The UK's leading accounting education platform. Trusted by 250,000+ students worldwide.",
+    type: 'website',
+    locale: 'en_GB',
+    url: SITE_URL,
+    siteName: 'AccountingBody',
+    title: 'AccountingBody — Everything You Need for Accounting & Finance',
+    description:
+      'Study notes, practice questions, and professional connections for every accounting qualification. ACCA, CIMA, AAT, ICAEW and more.',
     images: [
       {
-        url:    '/og-image.png',   // ← Create this image: 1200×630px, navy background with your logo
-        width:  1200,
+        url: '/og-default.png',
+        width: 1200,
         height: 630,
-        alt:    'AccountingBody — Accounting Education Platform',
+        alt: 'AccountingBody — Accounting & Finance Education Platform',
       },
     ],
   },
 
-  // ── Twitter / X card ───────────────────────────────────────────────────────
   twitter: {
-    card:        'summary_large_image',
-    title:       `${SITE_NAME} — Accounting Study & Professional Resources`,
-    description: 'Study notes, practice questions, and professional resources for ACCA, CIMA, AAT, ICAEW, and more.',
-    images:      ['/og-image.png'],
+    card: 'summary_large_image',
+    site: '@accountingbody',
+    creator: '@accountingbody',
+    title: 'AccountingBody — Everything You Need for Accounting & Finance',
+    description:
+      'Study notes, practice questions, and professional connections for every accounting qualification.',
+    images: ['/og-default.png'],
   },
 
-  // ── Robots (global default — pages can override) ───────────────────────────
   robots: {
-    index:  true,
+    index: true,
     follow: true,
     googleBot: {
-      index:                  true,
-      follow:                 true,
-      'max-video-preview':    -1,
-      'max-image-preview':    'large',
-      'max-snippet':          -1,
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
 
-  // ── Verification ───────────────────────────────────────────────────────────
-  // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel env vars after Step 8
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
 
-  // ── Default canonical (each page overrides this with its own URL) ──────────
+  manifest: '/site.webmanifest',
+
+  verification: {
+    google: process.env.NEXT_PUBLIC_ADSENSE_VERIFICATION,
+  },
+
   alternates: {
-    canonical: '/',
+    canonical: SITE_URL,
   },
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HOW TO SET CANONICAL ON INDIVIDUAL PAGES
-// In any page.tsx, export this at the top:
-//
-//   export const metadata: Metadata = {
-//     title:      'ACCA F3 Study Guide',
-//     description: '...',
-//     alternates: { canonical: 'https://accountingbody.com/articles/acca-f3-study-guide' },
-//   }
-//
-// For articles served on accountingbody.com, the canonical IS accountingbody.com.
-// For GlobalPayrollExpert articles DISPLAYED on GPE, the canonical points BACK here.
-// ─────────────────────────────────────────────────────────────────────────────
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const gtmId     = process.env.NEXT_PUBLIC_GTM_ID     ?? ''
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID ?? ''
-
+// ── Root Layout ───────────────────────────────────────────────────────────────
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en-GB" suppressHydrationWarning>
+    <html lang="en-GB" className="scroll-smooth">
+
       <head>
-        {/* ── Google AdSense verification ──────────────────────────────────
-            This meta tag proves to Google that you own this site.
-            It does NOT serve ads — it is verification only.
-            Set NEXT_PUBLIC_ADSENSE_ID in Vercel env vars (e.g. ca-pub-XXXXXXXXXXXXXXXX) */}
-        {adsenseId && (
-          <meta name="google-adsense-account" content={adsenseId} />
+        {/* ── Google AdSense verification ──────────────────────────────── */}
+        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+          <meta
+            name="google-adsense-account"
+            content={process.env.NEXT_PUBLIC_ADSENSE_ID}
+          />
         )}
 
-        {/* ── GTM is intentionally NOT loaded here ─────────────────────────
-            Under UK GDPR, analytics tracking requires explicit user consent.
-            The <CookieConsent> component below loads GTM dynamically only
-            AFTER the user clicks "Accept cookies". This is legally compliant. */}
+        {/* ── DNS prefetch for performance ─────────────────────────────── */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+
+        {/* ── GTM <head> snippet ───────────────────────────────────────── */}
+        {GTM_ID && (
+          <Script
+            id="gtm-script"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','${GTM_ID}');
+              `,
+            }}
+          />
+        )}
       </head>
 
-      <body className="bg-white text-navy-950 antialiased">
+      <body className="antialiased bg-surface text-slate-900 min-h-screen flex flex-col">
 
-        {/* ── Navigation ─────────────────────────────────────────────────────
-            Uncomment this line when your Navigation component is ready:
-            <Navigation />
-        */}
+        {/* ── GTM <body> noscript ──────────────────────────────────────── */}
+        {GTM_ID && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        )}
 
-        {/* ── Page content ───────────────────────────────────────────────── */}
-        <main>{children}</main>
+        {/* ── News ticker — fixed top bar ──────────────────────────────── */}
+        <NewsTicker />
 
-        {/* ── Footer ─────────────────────────────────────────────────────────
-            Uncomment this line when your Footer component is ready:
-            <Footer />
-        */}
+        {/* ── Main navigation — fixed below ticker ─────────────────────── */}
+        <Navigation />
 
-        {/* ── Cookie consent banner — also the GTM loader ────────────────── */}
-        <CookieConsent gtmId={gtmId} />
+        {/* ── Page content ─────────────────────────────────────────────── */}
+        <main
+          className="flex-1"
+          style={{ paddingTop: 'calc(var(--ticker-height, 40px) + var(--nav-height, 64px))' }}
+        >
+          {children}
+        </main>
+
+        {/* ── Footer ──────────────────────────────────────────────────── */}
+        <Footer />
+
+        {/* ── Cookie consent banner ────────────────────────────────────── */}
+        <CookieConsent gtmId={GTM_ID ?? ''} />
 
       </body>
     </html>
