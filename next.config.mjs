@@ -2,14 +2,35 @@
 const nextConfig = {
   async redirects() {
     return [
+      // /free-courses/ is the canonical URL — everything else redirects here
       {
-        source: '/free-courses',
-        destination: '/study/courses',
+        source: '/courses',
+        destination: '/free-courses',
         permanent: true,
       },
       {
-        source: '/free-courses/:path*',
-        destination: '/study/courses/:path*',
+        source: '/courses/:path*',
+        destination: '/free-courses/:path*',
+        permanent: true,
+      },
+      {
+        source: '/course',
+        destination: '/free-courses',
+        permanent: true,
+      },
+      {
+        source: '/course/:path*',
+        destination: '/free-courses/:path*',
+        permanent: true,
+      },
+      {
+        source: '/study/courses',
+        destination: '/free-courses',
+        permanent: true,
+      },
+      {
+        source: '/study/courses/:path*',
+        destination: '/free-courses/:path*',
         permanent: true,
       },
     ]
