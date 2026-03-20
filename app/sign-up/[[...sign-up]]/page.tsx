@@ -52,18 +52,16 @@ export default function SignUpPage() {
           <div className="flex justify-center">
             <SignUp
               appearance={{
-                elements: {
-                  rootBox: 'w-full',
-                  card: 'shadow-none border border-slate-200 rounded-xl bg-white p-8 w-full',
-                  headerTitle: 'hidden',
-                  headerSubtitle: 'hidden',
-                  socialButtonsBlockButton: 'border border-slate-200 rounded-lg h-11 text-sm font-medium text-navy-950 hover:bg-slate-50 transition-colors',
-                  dividerLine: 'bg-slate-200',
-                  dividerText: 'text-slate-400 text-xs',
-                  formFieldLabel: 'text-sm font-medium text-navy-950',
-                  formFieldInput: 'h-11 rounded-lg border-slate-200 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent',
-                  formButtonPrimary: 'h-11 rounded-lg bg-gold-500 text-navy-950 text-sm font-semibold hover:bg-gold-400 transition-colors shadow-sm',
-                  footerActionLink: 'text-navy-700 font-semibold hover:text-gold-500',
+                variables: {
+                  colorPrimary: '#0a0f2e',
+                  colorBackground: '#ffffff',
+                  colorText: '#0f172a',
+                  colorTextSecondary: '#64748b',
+                  colorInputBackground: '#ffffff',
+                  colorInputText: '#0f172a',
+                  borderRadius: '0.5rem',
+                  fontFamily: 'inherit',
+                  fontSize: '14px',
                 },
               }}
             />
