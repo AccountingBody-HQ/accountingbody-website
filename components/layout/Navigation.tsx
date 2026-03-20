@@ -427,7 +427,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
         {/* Mobile CTAs */}
         <div className="p-5 border-t border-slate-200 space-y-2">
           <Link
-            href="/login"
+            href="/sign-in"
             onClick={onClose}
             className="flex items-center justify-center h-10 px-4 rounded-lg text-sm font-semibold text-navy-950 border border-slate-300 hover:border-navy-950 transition-colors"
           >
@@ -582,7 +582,7 @@ export function Navigation() {
               </svg>
             </button>
             <Link
-              href="/login"
+              href="/sign-in"
               className="px-4 h-9 flex items-center text-sm font-medium text-navy-950 hover:text-navy-700 rounded-lg hover:bg-slate-50 transition-colors"
             >
               Log in
