@@ -21,6 +21,10 @@ const components: PortableTextComponents = {
     h2: ({ children }) => <h2 className="font-display text-2xl text-navy-950 font-bold mt-10 mb-4 leading-tight border-b border-slate-200 pb-3">{children}</h2>,
     h3: ({ children }) => <h3 className="font-display text-xl text-navy-950 font-semibold mt-8 mb-3 leading-snug">{children}</h3>,
     h4: ({ children }) => <h4 className="font-display text-lg text-navy-950 font-semibold mt-6 mb-2">{children}</h4>,
+    h5: ({ children }) => <h5 className="font-display text-base text-navy-950 font-semibold mt-5 mb-2">{children}</h5>,
+    h6: ({ children }) => <h6 className="font-display text-sm text-navy-700 font-semibold mt-4 mb-1 uppercase tracking-wide">{children}</h6>,
+    h5: ({ children }) => <h5 className="font-display text-base text-navy-950 font-semibold mt-5 mb-2">{children}</h5>,
+    h6: ({ children }) => <h6 className="font-display text-sm text-navy-700 font-semibold mt-4 mb-1 uppercase tracking-wide">{children}</h6>,
     blockquote: ({ children }) => (
       <blockquote className="border-l-4 border-gold-500 pl-5 pr-4 py-1 my-6 bg-gold-50 rounded-r-lg">
         <p className="text-slate-700 italic leading-relaxed text-base m-0">{children}</p>
