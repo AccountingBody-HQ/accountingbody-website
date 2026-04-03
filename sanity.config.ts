@@ -11,10 +11,11 @@ import manualCard   from './sanity/schemas/manualCard'
 import author       from './sanity/schemas/author'
 import category     from './sanity/schemas/category'
 import page         from './sanity/schemas/page'
+import tableBlock   from './sanity/schemas/tableBlock'
 import jobListing   from './sanity/schemas/jobListing'
 import firmProfile  from './sanity/schemas/firmProfile'
 
-const schemaTypes = [article, practicePost, quizbankQuiz, quizbankBlock, course, lesson, manualCard, page, author, category, jobListing, firmProfile]
+const schemaTypes = [article, practicePost, quizbankQuiz, quizbankBlock, tableBlock, course, lesson, manualCard, page, author, category, jobListing, firmProfile]
 
 const structure = (S: any) =>
   S.list().title('Content').items([
