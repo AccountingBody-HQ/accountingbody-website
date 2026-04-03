@@ -163,7 +163,17 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 </p>
               )}
 
-              <PortableTextRenderer value={article.body} />
+              <PortableTextRenderer value={(() => {
+                    const blocks = (article.body || []) as any[]
+                    const first = blocks[0]
+                    if (first?._type === 'block' && first?.children) {
+                      const firstText = first.children.map((c: any) => c.text || '').join('').trim()
+                      if (article.excerpt && firstText && article.excerpt.startsWith(firstText.substring(0, 80))) {
+                        return blocks.slice(1)
+                      }
+                    }
+                    return blocks
+                  })()} />
 
               {formattedReviewed && (
                 <div className="mt-10 flex items-center gap-2 text-sm text-slate-400 pt-6 border-t border-slate-100">
