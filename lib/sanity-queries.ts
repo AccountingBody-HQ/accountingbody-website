@@ -114,7 +114,7 @@ export async function getArticleBySlug(slug: string): Promise<ArticleFull | null
   const query = `
     *[_type == "article" && slug.current == $slug][0] {
       ${SUMMARY_FIELDS},
-      body,
+      body[]{ ..., _type == "tableBlock" => { _type, _key, headers, rows[]{ _type, _key, cells } } },
       canonicalOwner,
       showOnSites,
       mcqUrl,
