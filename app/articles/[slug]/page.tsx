@@ -157,11 +157,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             {/* Main content */}
             <div>
-              {article.excerpt && (
-                <p className="text-lg text-slate-600 leading-relaxed mb-8 pb-8 border-b border-slate-200 font-medium">
-                  {article.excerpt}
-                </p>
-              )}
+
 
               <PortableTextRenderer value={(() => {
                     const blocks = (article.body || []) as any[]
