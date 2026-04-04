@@ -175,7 +175,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <div className="mt-10 p-6 bg-blue-50 border border-blue-200 rounded-2xl">
                   <p className="font-display font-semibold text-navy-950 mb-1">Test your knowledge</p>
                   <p className="text-slate-600 text-sm mb-4">Practice questions for this topic.</p>
-                  
+                  <a
                     href={article.mcqUrl}
                     target="_blank"
                     rel="noopener noreferrer"
