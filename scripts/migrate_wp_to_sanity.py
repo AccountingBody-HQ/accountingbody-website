@@ -154,6 +154,12 @@ def process_element(el, blocks):
         children, mark_defs = parse_inline(el)
         if children: blocks.append({"_type":"block","_key":uid(),"style":"normal","markDefs":mark_defs,"children":children})
     elif el.name in ("ul","ol"):
+        if el.name == "ol":
+            lis = el.find_all("li", recursive=False)
+            if len(lis) == 1:
+                children, mark_defs = parse_inline(lis[0])
+                if children: blocks.append({"_type":"block","_key":uid(),"style":"normal","markDefs":mark_defs,"children":children})
+                return
         process_list(el, "bullet" if el.name=="ul" else "number", 1, blocks)
     elif el.name == "blockquote":
         t = el.get_text().strip()
