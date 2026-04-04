@@ -2,15 +2,21 @@ import xml.etree.ElementTree as ET
 import requests, json, re, os, time, uuid
 from bs4 import BeautifulSoup, NavigableString, Tag
 
-XML_FILE = "/workspaces/AccountingBody-Platfrom/accountingbodycom.WordPress.2026-04-03.xml"
+# ============================================================
+# CONFIGURATION
+# ============================================================
+XML_FILE   = "/workspaces/AccountingBody-Platfrom/accountingbodycom.WordPress.2026-04-03.xml"
 PROJECT_ID = "4rllejq1"
-DATASET = "production"
-TOKEN = os.environ["SANITY_API_TOKEN"]
-LOG_FILE = "/workspaces/AccountingBody-Platfrom/scripts/migration_log.json"
-API_URL = f"https://{PROJECT_ID}.api.sanity.io/v2026-03-16/data/mutate/{DATASET}"
-WP_NS = "http://wordpress.org/export/1.2/"
+DATASET    = "production"
+TOKEN      = os.environ["SANITY_API_TOKEN"]
+LOG_FILE   = "/workspaces/AccountingBody-Platfrom/scripts/migration_log.json"
+API_URL    = f"https://{PROJECT_ID}.api.sanity.io/v2026-03-16/data/mutate/{DATASET}"
+WP_NS      = "http://wordpress.org/export/1.2/"
 CONTENT_NS = "http://purl.org/rss/1.0/modules/content/"
 
+# ============================================================
+# LOG — Resumable migration. Completed posts are never re-sent.
+# ============================================================
 if os.path.exists(LOG_FILE):
     with open(LOG_FILE) as f: log = json.load(f)
 else:
@@ -21,6 +27,14 @@ def save_log():
 
 def uid(): return uuid.uuid4().hex[:12]
 
+# ============================================================
+# CLEAN SOUP
+# Removes WordPress-specific elements that must not migrate:
+# - Scripts, math, nav elements
+# - Key Takeaways and Full Tutorial blockquote widgets
+# - Further Reading sections in all three forms
+# - Yoast related links
+# ============================================================
 def clean_soup(soup):
     for tag in soup.find_all(["script","math","nav"]): tag.decompose()
     for bq in soup.find_all("blockquote"):
@@ -31,6 +45,12 @@ def clean_soup(soup):
         if "palette-color-6" in " ".join(p.get("class",[])) and "Further Reading" in p.get_text(): p.decompose()
     for ul in soup.find_all("ul", class_=lambda c: c and "yoast-seo-related-links" in c): ul.decompose()
     return soup
+
+# ============================================================
+# PARSE INLINE
+# Converts inline HTML elements to Sanity spans with marks.
+# Handles: strong, em, code, links, br
+# ============================================================
 def parse_inline(tag):
     children, mark_defs = [], []
     for node in tag.children:
@@ -57,6 +77,11 @@ def parse_inline(tag):
             children.append({"_type":"span","_key":uid(),"text":t,"marks":marks})
     return children, mark_defs
 
+# ============================================================
+# PROCESS LIST
+# Converts ul/ol to Sanity list blocks recursively.
+# Uses recursive=False to prevent double-processing nested items.
+# ============================================================
 def process_list(el, list_type, level, blocks):
     for li in el.find_all("li", recursive=False):
         li_children, li_mark_defs = [], []
@@ -76,12 +101,22 @@ def process_list(el, list_type, level, blocks):
                         k = uid()
                         li_mark_defs.append({"_type":"link","_key":k,"href":href})
                         li_children.append({"_type":"span","_key":uid(),"text":t,"marks":[k]})
+                    else:
+                        li_children.append({"_type":"span","_key":uid(),"text":t,"marks":[]})
                 else:
                     li_children.append({"_type":"span","_key":uid(),"text":t,"marks":[]})
         if li_children:
             blocks.append({"_type":"block","_key":uid(),"style":"normal","listItem":list_type,"level":level,"markDefs":li_mark_defs,"children":li_children})
         for child in li.find_all(["ul","ol"], recursive=False):
             process_list(child, "bullet" if child.name=="ul" else "number", level+1, blocks)
+
+# ============================================================
+# CONVERT TABLE
+# Handles all three WordPress table variants:
+# 1. Standard Gutenberg: <figure><table><thead><th>
+# 2. Classic block: <thead><td> (td not th in thead)
+# 3. Raw table: <table><tr><th> (no thead/tbody)
+# ============================================================
 def convert_table(table):
     headers, rows = [], []
     thead = table.find("thead")
@@ -103,8 +138,14 @@ def convert_table(table):
             elif tds:
                 cells = [td.get_text().strip() for td in tds]
                 if cells: rows.append({"_type":"tableRow","_key":uid(),"cells":cells})
-    return {"_type":"tableBlock","_key":uid(),"headers":headers,"rows":rows} if headers or rows else None
+    return {"_type":"tableBlock","_key":uid(),"headers":headers,"rows":rows} if (headers or rows) else None
 
+# ============================================================
+# PROCESS ELEMENT
+# Dispatches each HTML element to the correct Portable Text
+# converter. Handles: headings, paragraphs, lists, blockquotes,
+# tables, figures, pre, divs.
+# ============================================================
 def process_element(el, blocks):
     if el.name in ("h1","h2","h3","h4","h5","h6"):
         t = el.get_text().strip()
@@ -136,6 +177,13 @@ def process_element(el, blocks):
     elif el.name == "div":
         for child in el.find_all(["h1","h2","h3","h4","h5","h6","p","ul","ol","blockquote","table","figure","pre","div"], recursive=False):
             process_element(child, blocks)
+
+# ============================================================
+# HTML TO BLOCKS
+# Main conversion function. Strips WP block comments and
+# shortcodes, then iterates top-level elements.
+# Falls back to plain text if no blocks are produced.
+# ============================================================
 def html_to_blocks(html):
     if not html: return []
     html = re.sub(r"<!--.*?-->","",html,flags=re.DOTALL)
@@ -158,6 +206,20 @@ def send_to_sanity(doc):
     resp = requests.post(API_URL, headers={"Authorization":f"Bearer {TOKEN}","Content-Type":"application/json"}, json={"mutations":[{"createOrReplace":doc}]}, timeout=30)
     return resp.status_code, resp.json()
 
+# ============================================================
+# MAIN MIGRATION LOOP
+# Parses the WordPress XML export and migrates all published
+# posts to Sanity. Skips quiz posts and already-done posts.
+#
+# TWO TYPES OF POSTS IN THE XML:
+# Type 1 — Regular articles (~2015 posts) → migrate as article
+# Type 2 — Practice question posts (181 posts, have
+#           _abcm_quiz_json in meta) → SKIP here, migrate
+#           separately as practicePost documents later.
+#
+# TO RUN TEST (10 articles): leave posts[:10] as is
+# TO RUN FULL MIGRATION: change posts[:10] to posts
+# ============================================================
 print("Parsing XML...")
 tree = ET.parse(XML_FILE)
 root = tree.getroot()
@@ -169,21 +231,25 @@ print(f"Found {len(posts)} published posts")
 
 success = failed = skipped = 0
 
-for i, item in enumerate(posts[:10]):  # Change posts[:10] to posts for full run
-    wp_id = item.find(f"{{{WP_NS}}}post_id").text
-    title = (item.find("title").text or "").strip()
-    slug_raw = (item.find(f"{{{WP_NS}}}post_name").text or "").strip()
-    slug = make_slug(slug_raw or title)
-    date = (item.find(f"{{{WP_NS}}}post_date").text or "")[:10]
+for i, item in enumerate(posts[:10]):  # Change posts[:10] to posts for full migration run
+    wp_id      = item.find(f"{{{WP_NS}}}post_id").text
+    title      = (item.find("title").text or "").strip()
+    slug_raw   = (item.find(f"{{{WP_NS}}}post_name").text or "").strip()
+    slug       = make_slug(slug_raw or title)
+    date       = (item.find(f"{{{WP_NS}}}post_date").text or "")[:10]
     content_el = item.find(f"{{{CONTENT_NS}}}encoded")
-    html = content_el.text if content_el is not None else ""
-    cats = list(set([c.text for c in item.findall("category") if c.text]))
-    metas = item.findall(f"{{{WP_NS}}}postmeta")
-    doc_id = f"wp-post-{wp_id}"
+    html       = content_el.text if content_el is not None else ""
+    cats       = list(set([c.text for c in item.findall("category") if c.text]))
+    metas      = item.findall(f"{{{WP_NS}}}postmeta")
+    doc_id     = f"wp-post-{wp_id}"
 
+    # Skip already completed posts — makes migration resumable
     if doc_id in log["done"]:
         print(f"[{i+1}] SKIP: {title}"); skipped += 1; continue
 
+    # Skip practice question posts — identified by _abcm_quiz_json in meta
+    # These contain ONLY quiz JSON, no article content
+    # Must be migrated separately as practicePost documents
     is_quiz_post = any(
         meta.find(f"{{{WP_NS}}}meta_key") is not None and
         meta.find(f"{{{WP_NS}}}meta_key").text == "_abcm_quiz_json" and
@@ -195,9 +261,10 @@ for i, item in enumerate(posts[:10]):  # Change posts[:10] to posts for full run
     if is_quiz_post:
         print(f"[{i+1}] QUIZ SKIP: {title}"); skipped += 1; continue
 
-    yoast_desc = ""
-    yoast_title = ""
-    mcq_url = ""
+    # Extract from post meta
+    yoast_desc  = ""  # _yoast_wpseo_metadesc — used as excerpt and seoDescription — ~100% coverage
+    yoast_title = ""  # _yoast_wpseo_title — used as seoTitle — partial coverage
+    mcq_url     = ""  # _abcm_practice_url — link to practice questions page — 181 articles
     for meta in metas:
         mk = meta.find(f"{{{WP_NS}}}meta_key")
         mv = meta.find(f"{{{WP_NS}}}meta_value")
@@ -210,20 +277,27 @@ for i, item in enumerate(posts[:10]):  # Change posts[:10] to posts for full run
             mcq_url = mv.text.strip()
 
     blocks = html_to_blocks(html)
+
     doc = {
-        "_id":doc_id,"_type":"article","title":title,
-        "slug":{"_type":"slug","current":slug},
-        "publishedAt":f"{date}T00:00:00Z" if date else None,
-        "excerpt":yoast_desc if yoast_desc else None,
-        "seoDescription":yoast_desc if yoast_desc else None,
-        "seoTitle":yoast_title if yoast_title else None,
-        "mcqUrl":mcq_url if mcq_url else None,
-        "body":blocks,"canonicalOwner":"accountingbody",
-        "showOnSites":["accountingbody"],
-        "aiSearchable":False,"requiresQuarterlyReview":False,
-        "tags":cats[:10],
+        "_id"                    : doc_id,
+        "_type"                  : "article",
+        "title"                  : title,
+        "slug"                   : {"_type":"slug","current":slug},
+        "publishedAt"            : f"{date}T00:00:00Z" if date else None,
+        "excerpt"                : yoast_desc if yoast_desc else None,
+        "seoDescription"         : yoast_desc if yoast_desc else None,
+        "seoTitle"               : yoast_title if yoast_title else None,
+        "mcqUrl"                 : mcq_url if mcq_url else None,
+        "body"                   : blocks,
+        "canonicalOwner"         : "accountingbody",
+        "showOnSites"            : ["accountingbody"],
+        "aiSearchable"           : False,
+        "requiresQuarterlyReview": False,
+        "tags"                   : cats[:10],
     }
+    # Remove None values before sending to Sanity
     doc = {k:v for k,v in doc.items() if v is not None}
+
     status, result = send_to_sanity(doc)
     if status == 200:
         log["done"].append(doc_id); save_log()
@@ -233,5 +307,7 @@ for i, item in enumerate(posts[:10]):  # Change posts[:10] to posts for full run
         print(f"[{i+1}] FAIL: {title} -- {result}"); failed += 1
     time.sleep(0.3)
 
+print(f"")
 print(f"MIGRATION COMPLETE")
 print(f"Success: {success} | Failed: {failed} | Skipped: {skipped}")
+print(f"Log saved to: {LOG_FILE}")

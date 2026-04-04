@@ -19,8 +19,8 @@ export default defineType({
     quizQuestionField,
     defineField({ name: 'seoTitle', title: 'SEO Title', type: 'string', group: 'seo', validation: (Rule) => Rule.max(60) }),
     defineField({ name: 'seoDescription', title: 'SEO Description', type: 'text', rows: 2, group: 'seo', validation: (Rule) => Rule.max(160) }),
-    defineField({ name: 'canonicalOwner', title: 'Canonical Owner', type: 'string', group: 'multisite', options: { list: [{ title: 'AccountingBody', value: 'accountingbody' }, { title: 'GlobalPayrollExpert', value: 'globalpayrollexpert' }, { title: 'EthioTax', value: 'ethiotax' }], layout: 'radio' }, validation: (Rule) => Rule.required() }),
-    defineField({ name: 'showOnSites', title: 'Show On Sites', type: 'array', group: 'multisite', of: [{ type: 'string' }], options: { list: [{ title: 'AccountingBody', value: 'accountingbody' }, { title: 'GlobalPayrollExpert', value: 'globalpayrollexpert' }, { title: 'EthioTax', value: 'ethiotax' }], layout: 'grid' } }),
+    defineField({ name: 'canonicalOwner', title: 'Canonical Owner', type: 'string', group: 'multisite', options: { list: [{ title: 'AccountingBody', value: 'accountingbody' }, { title: 'HRLake', value: 'hrlake' }, { title: 'EthioTax', value: 'ethiotax' }], layout: 'radio' }, validation: (Rule) => Rule.required() }),
+    defineField({ name: 'showOnSites', title: 'Show On Sites', type: 'array', group: 'multisite', of: [{ type: 'string' }], options: { list: [{ title: 'AccountingBody', value: 'accountingbody' }, { title: 'HRLake', value: 'hrlake' }, { title: 'EthioTax', value: 'ethiotax' }], layout: 'grid' } }),
   ],
   preview: {
     select: { title: 'title', difficulty: 'difficulty', examBody: 'examBody', media: 'featuredImage' },
