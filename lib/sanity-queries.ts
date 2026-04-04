@@ -147,16 +147,17 @@ export async function getAllCategorySlugs(): Promise<string[]> {
 }
 
 export function resolveCanonicalUrl(article: ArticleFull): string | null {
+  // accountingbody owns the canonical — return null so Next.js uses the default
   if (!article.canonicalOwner || article.canonicalOwner === 'accountingbody') {
     return null
   }
-  const domains: Record<string, string> = {
-    globalpayrollexpert: 'https://globalpayrollexpert.com',
-    ethiotax:            'https://ethiotax.com',
+  if (article.canonicalOwner === 'hrlake') {
+    return `https://hrlake.com/insights/${article.slug.current}/`
   }
-  const domain = domains[article.canonicalOwner]
-  if (!domain) return null
-  return `${domain}/study/${article.examBody?.toLowerCase() ?? ''}/${article.slug.current}`
+  if (article.canonicalOwner === 'ethiotax') {
+    return `https://ethiotax.com/articles/${article.slug.current}/`
+  }
+  return null
 }
 // ── Manual cards (replaces [ab_combined_cards] shortcode) ─────────────────────
 
