@@ -77,11 +77,13 @@ export async function getPracticePostBySlug(slug: string): Promise<PracticePost 
 
   // Transform quizQuestions array into quizJson string that QuizRenderer expects
   if (post.quizQuestions?.length) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const questions = post.quizQuestions.map((q: any) => ({
       id:           q.id,
       type:         q.type ?? 'multiple-choice',
       question:     q.questionText,
-      options:      (q.options ?? []).map((o: string) => ({ label: o, value: o })),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      options:      (q.options ?? []).map((o: any) => ({ label: o, value: o })),
       correctIndex: q.correctIndex,
       explanation:  q.explanation,
       meta:         { primaryTopic: q.primaryTopic },
