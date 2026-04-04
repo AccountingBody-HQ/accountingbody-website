@@ -41,6 +41,7 @@ export default defineConfig({
   title: 'AccountingBody Studio',
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
-  plugins: [structureTool({ structure }), visionTool()],
+  plugins: [structureTool({ structure, defaultDocumentNode: undefined }), visionTool()],
+  basePath: '/studio',
   schema: { types: schemaTypes },
 })
