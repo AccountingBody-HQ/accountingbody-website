@@ -31,7 +31,7 @@ const components: PortableTextComponents = {
   },
   list: {
     bullet: ({ children }) => <ul className="list-none space-y-2 mb-5 pl-0">{children}</ul>,
-    number: ({ children }) => <ol className="list-decimal list-outside space-y-2 mb-5 pl-6">{children}</ol>,
+    number: ({ children }) => <ol className="list-decimal list-outside space-y-2 mb-5 pl-6 marker:text-slate-500 marker:font-semibold">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }) => (
@@ -40,7 +40,7 @@ const components: PortableTextComponents = {
         <span>{children}</span>
       </li>
     ),
-    number: ({ children }) => <li className="text-slate-700 text-base leading-relaxed pl-1">{children}</li>,
+    number: ({ children }) => <li className="text-slate-700 text-base leading-relaxed pl-2 marker:text-slate-500">{children}</li>,
   },
   marks: {
     strong: ({ children }) => <strong className="font-semibold text-navy-950">{children}</strong>,
