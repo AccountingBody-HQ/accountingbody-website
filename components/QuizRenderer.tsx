@@ -65,8 +65,13 @@ function getCorrectLabel(q: QuizQuestion, opts: QuizOption[]): string {
   if (q.correctIndex !== undefined) return opts[q.correctIndex]?.label ?? ''
   if (q.correct !== undefined) {
     const c = String(q.correct)
+    // Try label/value match FIRST — prevents numeric labels like "3" being
+    // misread as array index 3
+    const found = opts.find(o => o.value === c || o.label === c)
+    if (found) return found.label
+    // Fall back to numeric index only if no label match found
     if (!isNaN(Number(c))) return opts[Number(c)]?.label ?? c
-    return opts.find(o => o.value === c || o.label === c)?.label ?? c
+    return c
   }
   return ''
 }
