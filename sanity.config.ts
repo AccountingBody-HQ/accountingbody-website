@@ -37,7 +37,7 @@ const structure = (S: any) =>
   ])
 
 export default defineConfig({
-  name: 'accountingbody',
+  name: 'default',
   title: 'AccountingBody Studio',
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
