@@ -2,14 +2,9 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getPracticePostBySlug, getAllPracticePostSlugs } from '@/lib/practice-queries'
+import { getPracticePostBySlug } from '@/lib/practice-queries'
 import PortableTextRenderer from '@/components/PortableTextRenderer'
 import QuizRenderer from '@/components/QuizRenderer'
-
-export async function generateStaticParams() {
-  const slugs = await getAllPracticePostSlugs()
-  return slugs.map(slug => ({ slug }))
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
