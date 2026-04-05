@@ -77,25 +77,28 @@ export async function getPracticePostBySlug(slug: string): Promise<PracticePost 
   if (!post) return null
 
   // Transform quizQuestions array into quizJson string that QuizRenderer expects
-  if (post.quizQuestions?.length) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const questions = post.quizQuestions.map((q: any) => {
+  try {
+    if (Array.isArray(post.quizQuestions) && post.quizQuestions.length) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const options = (q.options ?? []).map((o: any) => ({ label: o, value: o }))
-      // Resolve correct label from original index BEFORE shuffling happens in QuizRenderer
-      const correctLabel = options[q.correctIndex]?.label ?? null
-      return {
-        id:          q.id,
-        type:        q.type ?? 'multiple-choice',
-        question:    q.questionText,
-        options,
-        correct:     correctLabel,
-        explanation: q.explanation,
-        meta:        { primaryTopic: q.primaryTopic },
-      }
-    })
-    post.quizJson = JSON.stringify({ questions })
-    post.questionCount = questions.length
+      const questions = post.quizQuestions.map((q: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const options = Array.isArray(q.options) ? q.options.map((o: any) => ({ label: String(o), value: String(o) })) : []
+        const correctLabel = (typeof q.correctIndex === 'number' && options[q.correctIndex]) ? options[q.correctIndex].label : null
+        return {
+          id:          q.id ?? String(Math.random()),
+          type:        q.type ?? 'multiple-choice',
+          question:    q.questionText ?? '',
+          options,
+          correct:     correctLabel,
+          explanation: q.explanation ?? '',
+          meta:        { primaryTopic: q.primaryTopic ?? '' },
+        }
+      })
+      post.quizJson = JSON.stringify({ questions })
+      post.questionCount = questions.length
+    }
+  } catch (e) {
+    console.error('practice-queries: quizQuestions transform failed', e)
   }
 
   return post as PracticePost
